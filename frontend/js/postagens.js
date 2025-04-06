@@ -66,11 +66,10 @@ async function carregarPosts() {
 
                 console.log("[DEBUG] likesData:", likesData);
 
-                if (!Array.isArray(likesData.users) || likesData.users.length === 0) {
-                    //if (likesData.users.length === 0) {
+                if (!Array.isArray(likesData.usuarios) || likesData.usuarios.length === 0) {
                     likesList.innerHTML = "<p>Ninguém curtiu esta postagem ainda.</p>";
                 } else {
-                    likesData.users.forEach(user => {
+                    likesData.usuarios.forEach(user => {
                         const userItem = document.createElement("p");
 
                         userItem.textContent = user.username + (user.id === currentUserId ? " (você)" : "");
