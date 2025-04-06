@@ -5,11 +5,11 @@ async function carregarPosts() {
 
     try {
         const response = await fetch("http://127.0.0.1:5000/api/postagem", {
-            headers:{
+            headers: {
                 "Authorization": `Bearer ${token}`
             }
         });
-        
+
         const posts = await response.json();
 
         if (posts.length === 0) {
@@ -19,28 +19,38 @@ async function carregarPosts() {
 
         for (let post of posts) {
             const postElement = document.createElement("div");
-            postElement.classList.add("card", "mb-3");
+            postElement.classList.add("card", "bg-light", "mb-3");
 
             postElement.innerHTML = `
-          <div class="card-body">
-            <h5 class="card-title">${post.titulo}</h5>
-            <p class="card-text">${post.conteudo}</p>
-            <p class="text-muted">Autor: ${post.autor} | ${new Date(post.criado_em).toLocaleDateString()}</p>
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm like-btn" data-post-id="${post.id}">Curtir (${post.curtidas})</button>
-              <button class="btn btn-outline-secondary btn-sm view-likes-btn" data-post-id="${post.id}">Ver quem curtiu</button>
-              <button class="btn btn-outline-success btn-sm view-comments-btn" data-post-id="${post.id}">Ver comentários</button>
-              <button class="btn btn-outline-primary btn-sm toggle-comment-field" data-post-id="${post.id}">Comentar</button>
-            </div>
-            <div id="liked-by-${post.id}" class="mt-2 text-muted small"></div>
-            <div id="like-list-${post.id}" class="mt-2 d-none"></div>
-            <div id="comment-form-container-${post.id}" class="mt-3 d-none">
-              <textarea class="form-control mb-2" id="comment-input-${post.id}" rows="2" placeholder="Escreva um comentário..."></textarea>
-              <button class="btn btn-sm btn-success" onclick="enviarComentario(${post.id})">Enviar</button>
-            </div>
-            <div id="comment-list-${post.id}" class="mt-3 d-none"></div>
-          </div>
-        `;
+                <div class="card-header">
+                    <h5 class="card-title">${post.titulo}</h5>
+                </div>            
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p class="card-text">${post.conteudo}</p>
+
+                        <footer class="blockquote-footer">
+                            ${post.autor}
+                            
+                            <cite title="Source Title">${new Date(post.criado_em).toLocaleDateString()}</cite>
+                        </footer>
+
+                    </blockquote>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary btn-sm like-btn" data-post-id="${post.id}">Curtir (${post.curtidas})</button>
+                        <button class="btn btn-outline-secondary btn-sm view-likes-btn" data-post-id="${post.id}">Ver quem curtiu</button>
+                        <button class="btn btn-outline-success btn-sm view-comments-btn" data-post-id="${post.id}">Ver comentários</button>
+                        <button class="btn btn-outline-primary btn-sm toggle-comment-field" data-post-id="${post.id}">Comentar</button>
+                    </div>
+                    <div id="liked-by-${post.id}" class="mt-2 text-muted small"></div>
+                    <div id="like-list-${post.id}" class="mt-2 d-none"></div>
+                    <div id="comment-form-container-${post.id}" class="mt-3 d-none">
+                        <textarea class="form-control mb-2" id="comment-input-${post.id}" rows="2" placeholder="Escreva um comentário..."></textarea>
+                        <button class="btn btn-sm btn-success" onclick="enviarComentario(${post.id})">Enviar</button>
+                    </div>
+                    <div id="comment-list-${post.id}" class="mt-3 d-none"></div>
+                </div>
+            `;
 
             postsContainer.appendChild(postElement);
         }
@@ -90,7 +100,7 @@ async function carregarPosts() {
             const postId = button.dataset.postId;
             const likes = await fetchLikes(postId);
             const youLiked = Array.isArray(likes.users) && likes.users.some(user => user.id === currentUserId);
-            
+
             if (youLiked) {
                 document.getElementById(`liked-by-${postId}`).textContent = "Você curtiu isso ❤️";
             }
@@ -125,11 +135,11 @@ async function likePost(postId) {
 async function fetchLikes(postId) {
     const token = localStorage.getItem("token");
     const response = await fetch(`http://127.0.0.1:5000/api/postagem/${postId}/curtidas`, {
-        headers:{
+        headers: {
             "Authorization": `Bearer ${token}`
         }
     });
-    
+
     return await response.json();
 }
 
@@ -137,7 +147,7 @@ async function fetchLikes(postId) {
 async function fetchWhoLikes(postId) {
     const token = localStorage.getItem("token");
     const response = await fetch(`http://127.0.0.1:5000/api/postagem/${postId}/quemcurtiu`, {
-        headers:{
+        headers: {
             "Authorization": `Bearer ${token}`
         }
     });
@@ -205,3 +215,49 @@ document.addEventListener("click", async (event) => {
         }
     }
 });
+
+// Envio de nova postagem
+document.getElementById("post-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        alert("Você precisa estar logado para postar.");
+        return;
+    }
+
+    const titulo = document.getElementById("post-title").value.trim();
+    const conteudo = document.getElementById("post-content").value.trim();
+
+    if (!titulo || !conteudo) {
+        alert("Título e conteúdo são obrigatórios.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/api/postagem", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ titulo, conteudo })
+        });
+
+        if (response.ok) {
+            document.getElementById("post-title").value = "";
+            document.getElementById("post-content").value = "";
+            document.getElementById("post-feed").innerHTML = "";
+
+            await carregarPosts();
+        } else {
+            const data = await response.json();
+            alert("Erro ao postar: " + (data.error || data.message));
+        }
+    } catch (err) {
+        console.error("Erro ao tentar postar:", err);
+        alert("Erro ao tentar postar.");
+    }
+});
+
