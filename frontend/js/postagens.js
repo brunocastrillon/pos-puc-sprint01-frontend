@@ -1,10 +1,15 @@
 async function carregarPosts() {
-    const postsContainer = document.getElementById("posts-container");
+    const postsContainer = document.getElementById("post-feed");
     const token = localStorage.getItem("token");
     const currentUserId = getUserIdFromToken(token);
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/api/postagem");
+        const response = await fetch("http://127.0.0.1:5000/api/postagem", {
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        
         const posts = await response.json();
 
         if (posts.length === 0) {
@@ -18,11 +23,11 @@ async function carregarPosts() {
 
             postElement.innerHTML = `
           <div class="card-body">
-            <h5 class="card-title">${post.title}</h5>
-            <p class="card-text">${post.content}</p>
-            <p class="text-muted">Autor: ${post.author} | ${new Date(post.created_at).toLocaleDateString()}</p>
+            <h5 class="card-title">${post.titulo}</h5>
+            <p class="card-text">${post.conteudo}</p>
+            <p class="text-muted">Autor: ${post.autor} | ${new Date(post.criado_em).toLocaleDateString()}</p>
             <div class="d-flex gap-2">
-              <button class="btn btn-primary btn-sm like-btn" data-post-id="${post.id}">Curtir (${post.likes})</button>
+              <button class="btn btn-primary btn-sm like-btn" data-post-id="${post.id}">Curtir (${post.curtidas})</button>
               <button class="btn btn-outline-secondary btn-sm view-likes-btn" data-post-id="${post.id}">Ver quem curtiu</button>
               <button class="btn btn-outline-success btn-sm view-comments-btn" data-post-id="${post.id}">Ver comentários</button>
               <button class="btn btn-outline-primary btn-sm toggle-comment-field" data-post-id="${post.id}">Comentar</button>
@@ -119,13 +124,24 @@ async function likePost(postId) {
 
 // Listar curtidas
 async function fetchLikes(postId) {
-    const response = await fetch(`http://127.0.0.1:5000/api/posts/${postId}/likes`);
+    const token = localStorage.getItem("token");
+    const response = await fetch(`http://127.0.0.1:5000/api/postagem/${postId}/curtidas`, {
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    });
+    
     return await response.json();
 }
 
 // Buscar lista de curtidas e quem curtiu
 async function fetchWhoLikes(postId) {
-    const response = await fetch(`http://127.0.0.1:5000/api/posts/${postId}/wholikes`);
+    const token = localStorage.getItem("token");
+    const response = await fetch(`http://127.0.0.1:5000/api/postagem/${postId}/quemcurtiu`, {
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    });
     return await response.json();
 }
 
