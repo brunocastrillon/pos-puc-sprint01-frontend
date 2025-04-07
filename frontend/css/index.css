@@ -1,0 +1,19 @@
+body {
+    padding-top: 4rem;
+}
+
+.tile {
+    border-radius: 1rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, .1);
+    transition: transform 0.2s ease;
+}
+
+.tile:hover {
+    transform: translateY(-5px);
+}
+
+#post-section {
+    display: none;
+}
