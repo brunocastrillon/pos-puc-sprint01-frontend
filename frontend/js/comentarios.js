@@ -1,8 +1,10 @@
 // Evento para alternar a exibição do campo de comentário ao clicar em "Comentar"
 document.addEventListener("click", (event) => {
     if (event.target && event.target.classList.contains("toggle-comment-field")) {
+        
         const postId = event.target.getAttribute("data-post-id");
         const formContainer = document.getElementById(`comment-form-container-${postId}`);
+        
         if (formContainer.classList.contains("d-none")) {
             formContainer.classList.remove("d-none");
         } else {
@@ -14,33 +16,36 @@ document.addEventListener("click", (event) => {
 // Submeter comentário
 async function enviarComentario(postId) {
     const token = localStorage.getItem("token");
+
     if (!token) {
         alert("Você precisa estar logado para comentar.");
         return;
     }
 
     const input = document.getElementById(`comment-input-${postId}`);
-    const content = input.value.trim();
+    const conteudo = input.value.trim();
 
-    if (!content) {
+    if (!conteudo) {
         alert("O comentário não pode estar vazio.");
         return;
     }
 
-    const response = await fetch(`http://127.0.0.1:5000/api/comments`, {
+    const response = await fetch(`http://127.0.0.1:5000/api/comentario`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify({ post_id: postId, content })
+        body: JSON.stringify({ id_postagem: postId, conteudo })
     });
 
     const result = await response.json();
 
     if (response.ok) {
         input.value = "";
+        
         const container = document.getElementById(`comment-list-${postId}`);
+        
         await carregarComentarios(postId, container);
     } else {
         alert("Erro ao adicionar comentário: " + (result.error || result.message));
@@ -51,6 +56,7 @@ async function enviarComentario(postId) {
 async function carregarComentarios(postId, container) {
     try {
         const token = localStorage.getItem("token");
+        
         const response = await fetch(`http://127.0.0.1:5000/api/postagem/${postId}/comentarios`, {
             headers:{
                 "Authorization": `Bearer ${token}`
@@ -69,10 +75,10 @@ async function carregarComentarios(postId, container) {
             const item = document.createElement("div");
             item.className = "mb-2 border-bottom pb-2";
             item.innerHTML = `
-          <p class="mb-1"><strong>${comment.autor}</strong> 
-            <span class="text-muted small">(${new Date(comment.criado_em).toLocaleString()})</span></p>
-          <p class="mb-0">${comment.conteudo}</p>
-        `;
+                <p class="mb-1"><strong>${comment.autor}</strong> 
+                <span class="text-muted small">(${new Date(comment.criado_em).toLocaleString()})</span></p>
+                <p class="mb-0">${comment.conteudo}</p>
+            `;
             container.appendChild(item);
         });
     } catch (err) {

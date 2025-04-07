@@ -121,7 +121,7 @@ async function likePost(postId) {
         return;
     }
 
-    const response = await fetch(`http://127.0.0.1:5000/api/posts/${postId}/like`, {
+    const response = await fetch(`http://127.0.0.1:5000/api/postagem/${postId}/curtir`, {
         method: "POST",
         headers: { "Authorization": `Bearer ${token}` }
     });
