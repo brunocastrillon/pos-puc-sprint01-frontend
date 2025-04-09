@@ -1,0 +1,45 @@
+document.getElementById("go-profile").addEventListener("click", async () => {
+    document.getElementById("post-section").classList.add("d-none");
+    document.getElementById("info-tiles").classList.add("d-none");
+    document.getElementById("profile-section").classList.remove("d-none");
+
+    await carregarPostsDoUsuario();
+});
+
+async function carregarPostsDoUsuario() {
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
+    const userId = getUserIdFromToken(token);
+    const container = document.getElementById("user-posts");
+
+    container.innerHTML = "<p>Carregando suas postagens...</p>";
+
+    const response = await fetch(`http://127.0.0.1:5000/api/postagem/usuario/${userId}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+    });
+    
+    const posts = await response.json();
+
+    if (!posts.length) {
+        container.innerHTML = "<p class='text-muted'>Você ainda não postou nada.</p>";
+        return;
+    }
+
+    container.innerHTML = "";
+    posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "card mb-3";
+        div.innerHTML = `
+            <div class="card-body">
+                <h5 class="card-title">${post.title}</h5>
+
+                <p class="card-text">${post.content}</p>
+                <p class="text-muted">Criado em: ${new Date(post.created_at).toLocaleString()}</p>
+
+                <button class="btn btn-sm btn-warning me-2" onclick="editarPost(${post.id}, '${post.title}', \`${post.content.replace(/`/g, "\\`")}\`)">Editar</button>
+                <button class="btn btn-sm btn-danger" onclick="excluirPost(${post.id})">Excluir</button>
+            </div>
+      `;
+        container.appendChild(div);
+    });
+}
