@@ -1,15 +1,24 @@
 document.getElementById("go-profile").addEventListener("click", async () => {
-    document.getElementById("post-section").classList.add("d-none");
     document.getElementById("info-tiles").classList.add("d-none");
-    document.getElementById("profile-section").classList.remove("d-none");
+    document.getElementById("post-feed").classList.add("d-none");
+    document.getElementById("user-posts").classList.remove("d-none");
+    document.getElementById("profile-menu").classList.remove("d-none");
 
     await carregarPostsDoUsuario();
 });
 
+document.getElementById("back-to-feed").addEventListener("click", async () => {
+    document.getElementById("info-tiles").classList.add("d-none");
+    document.getElementById("post-feed").classList.remove("d-none");
+    document.getElementById("user-posts").classList.add("d-none");
+    document.getElementById("profile-menu").classList.add("d-none");
+
+    await carregarPosts();
+});
+
+
 async function carregarPostsDoUsuario() {
     const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
-    const userId = getUserIdFromToken(token);
     const container = document.getElementById("user-posts");
 
     container.innerHTML = "<p>Carregando suas postagens...</p>";
@@ -17,7 +26,7 @@ async function carregarPostsDoUsuario() {
     const response = await fetch(`http://127.0.0.1:5000/api/postagem/usuario`, {
         headers: { "Authorization": `Bearer ${token}` }
     });
-    
+
     const posts = await response.json();
 
     if (!posts.length) {

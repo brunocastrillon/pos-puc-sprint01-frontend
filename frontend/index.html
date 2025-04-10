@@ -15,6 +15,18 @@
     <nav class="navbar navbar-light navbar-expand-lg fixed-top" style="background-color: #e3f2fd;">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Microblog Minimalista</a>
+
+            <nav aria-label="breadcrumb" class="d-none" id="profile-menu">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" id="back-to-feed">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        Perfil
+                    </li>
+                </ol>
+            </nav>
+
             <div class="d-flex">
                 <a id="go-profile" class="btn btn-link">
                     <span id="username-display" class="navbar-text text-primary me-3"></span>
@@ -27,6 +39,7 @@
     </nav>
 
     <main class="container mt-4">
+        <!-- tiles da pagina de login -->
         <div id="info-tiles" class="row g-4 mb-5">
             <div class="col-md-4">
                 <div class="tile">
@@ -48,22 +61,30 @@
             </div>
         </div>
 
+        <!-- formulario de postagem -->
         <section id="post-section">
             <div class="card my-4">
                 <div class="card-body">
                     <h5 class="card-title">Nova Postagem</h5>
                     <form id="post-form">
-                        <input type="text" id="post-title" class="form-control mb-2" placeholder="Título da postagem" required />
-                        <textarea id="post-content" class="form-control mb-2" rows="3" placeholder="O que você está pensando?" required></textarea>
+                        <input type="text" id="post-title" class="form-control mb-2" placeholder="Título da postagem"
+                            required />
+                        <textarea id="post-content" class="form-control mb-2" rows="3"
+                            placeholder="O que você está pensando?" required></textarea>
                         <button type="submit" class="btn btn-primary">Publicar</button>
                     </form>
                 </div>
             </div>
 
+            <!-- lista com todas as postagens -->
             <div id="post-feed"></div>
+
+            <!-- lista com postagens do usuário logado -->
+            <div id="user-posts" class="d-none"></div>
         </section>
     </main>
 
+    <!-- modal de login -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form id="login-form" class="modal-content">
@@ -88,6 +109,7 @@
         </div>
     </div>
 
+    <!-- modal de curtidas -->
     <div class="modal fade" id="likesModal" tabindex="-1" aria-labelledby="likesModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -100,10 +122,15 @@
         </div>
     </div>
 
+    <!-- profile -->
+    <!-- 
     <section id="profile-section" class="d-none">
         <h3 class="mb-4">Minhas Postagens</h3>
+
+        lista com postagens do usuário logado
         <div id="user-posts"></div>
-    </section>      
+    </section>
+    -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
