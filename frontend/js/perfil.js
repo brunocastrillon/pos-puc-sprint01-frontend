@@ -14,7 +14,7 @@ async function carregarPostsDoUsuario() {
 
     container.innerHTML = "<p>Carregando suas postagens...</p>";
 
-    const response = await fetch(`http://127.0.0.1:5000/api/postagem/usuario/${userId}`, {
+    const response = await fetch(`http://127.0.0.1:5000/api/postagem/usuario`, {
         headers: { "Authorization": `Bearer ${token}` }
     });
     
@@ -31,12 +31,12 @@ async function carregarPostsDoUsuario() {
         div.className = "card mb-3";
         div.innerHTML = `
             <div class="card-body">
-                <h5 class="card-title">${post.title}</h5>
+                <h5 class="card-title">${post.titulo}</h5>
 
-                <p class="card-text">${post.content}</p>
-                <p class="text-muted">Criado em: ${new Date(post.created_at).toLocaleString()}</p>
+                <p class="card-text">${post.conteudo}</p>
+                <p class="text-muted">Criado em: ${new Date(post.criado_em).toLocaleString()}</p>
 
-                <button class="btn btn-sm btn-warning me-2" onclick="editarPost(${post.id}, '${post.title}', \`${post.content.replace(/`/g, "\\`")}\`)">Editar</button>
+                <button class="btn btn-sm btn-warning me-2" onclick="editarPost(${post.id}, '${post.titulo}', \`${post.conteudo.replace(/`/g, "\\`")}\`)">Editar</button>
                 <button class="btn btn-sm btn-danger" onclick="excluirPost(${post.id})">Excluir</button>
             </div>
       `;
