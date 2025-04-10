@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameDisplay = document.getElementById("username-display");
     const postSection = document.getElementById("post-section");
     const infoTiles = document.getElementById("info-tiles");
+    const breadcrumb = document.getElementById("profile-menu");
+    
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
 
@@ -13,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         loginBtn.classList.add("d-none");
         logoutBtn.classList.remove("d-none");
+
+        breadcrumb.classList.add("d-none");
 
         postSection.style.display = "block";
         infoTiles.style.display = "none";
@@ -24,6 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         loginBtn.classList.remove("d-none");
         logoutBtn.classList.add("d-none");
+
+        breadcrumb.classList.add("d-none");
 
         postSection.style.display = "none";
         infoTiles.style.display = "flex";
@@ -45,6 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         loginBtn.classList.remove("d-none");
         logoutBtn.classList.add("d-none");
+
+        breadcrumb.classList.add("d-none");
+        infoTiles.classList.remove("d-none");
 
         postSection.style.display = "none";
         infoTiles.style.display = "flex";
