@@ -1,6 +1,6 @@
 # 📝 Microblog SPA - Frontend
 
-Este projeto é um **Single Page Application (SPA)** minimalista para um **microblog** desenvolvido com **HTML, Bootstrap e JavaScript puro**. Ele consome uma API Flask no backend e permite funcionalidades como:
+Este projeto foi desenvolvido como parte das atividades práticas da Sprint-01 (Desenvolvimento Full-Stack Básico) do curso de Pós-Graduação em Engenharia de Software. É um **Single Page Application (SPA)** minimalista para um **microblog** desenvolvido com **HTML, Bootstrap e JavaScript puro**. Ele consome uma API Flask no backend e permite funcionalidades como:
 
 - Registro e login de usuários
 - Criação, edição e exclusão de postagens
