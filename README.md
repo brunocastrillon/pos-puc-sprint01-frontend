@@ -32,14 +32,17 @@ Siga as etapas abaixo para rodar o projeto em ambiente local:
 ```
 /frontend/
 │
-├── index.html           # Página principal da aplicação
-├── auth.js              # Lógica de login do usuário
-├── register.js          # Lógica de cadastro de novo usuário
-├── posts.js             # Listagem, curtidas e comentários de postagens
-├── comments.js          # Comentários das postagens
-├── profile.js           # Página de perfil do usuário (posts pessoais, edição, exclusão)
-├── main.js              # Controle geral da SPA e autenticação
-└── styles.css           # (Opcional) Estilos customizados adicionais
+├── assets/                 # (Vazio) imagens, icones, etc.
+├── css/                    # folhas de estilo
+├──── index.css             # (Opcional) Estilos customizados adicionais
+├── js/                     # lógica de dinamismo da aplicação e acesso aos dados
+├──── autenticacao.js       # login do usuário
+├──── comentarios.js        # Comentários das postagens
+├──── main.js               # Comentários das postagens
+├──── perfil.js             # Página de perfil do usuário (posts pessoais, edição, exclusão)
+├──── postagens.js          # Listagem, curtidas e comentários de postagens
+├──── registro.js           # cadastro de novo usuário
+└── index.html              # Página principal da aplicação
 ```
 
 ---
