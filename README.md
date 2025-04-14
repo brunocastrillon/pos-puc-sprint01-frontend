@@ -57,4 +57,4 @@ Siga as etapas abaixo para rodar o projeto em ambiente local:
 
 ## 📄 Licença
 
-Este projeto é livre para uso educacional, acadêmico e pessoal.
+📌 *Projeto desenvolvido para fins acadêmicos no curso de Pós-Graduação em Engenharia de Software*
